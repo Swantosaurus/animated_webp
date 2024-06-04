@@ -1,11 +1,13 @@
 package com.show.animated_webp.frame
 
 import coil.ImageLoader
-import coil.decode.*
+import coil.decode.DecodeResult
+import coil.decode.Decoder
+import coil.decode.ImageSource
 import coil.fetch.SourceResult
 import coil.request.Options
-import com.show.animated_webp.drawable.WebPDrawable
 import com.show.animated_webp.decoder.WebPSupportStatus
+import com.show.animated_webp.drawable.WebPDrawable
 import com.show.animated_webp.io.ByteBufferLoader
 import kotlinx.coroutines.runInterruptible
 import java.nio.ByteBuffer
@@ -14,8 +16,6 @@ class AnimatedWebPDecoder constructor(
     private val source: ImageSource,
     private val options: Options,
 ) : Decoder {
-
-
     override suspend fun decode() = runInterruptible {
         val byteArray = source.source().readByteArray()
         val byteBuffer = ByteBuffer.allocateDirect(byteArray.size).put(byteArray)
@@ -28,10 +28,7 @@ class AnimatedWebPDecoder constructor(
         })
         DecodeResult(drawable, false)
     }
-
-
     class Factory : Decoder.Factory {
-
         override fun create(
             result: SourceResult,
             options: Options,
